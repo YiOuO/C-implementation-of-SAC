@@ -23,7 +23,7 @@ int main(){
     double std = 2e-2;
     int batch_size = 32;
     int max_episodes = 1000;
-    int max_timesteps = 100;
+    int max_timesteps = 10000;
     double gamma = 0.99;
     double tau = 0.005;
     double alpha = 0.2;
@@ -47,6 +47,7 @@ int main(){
     for (int episode = 0; episode < max_episodes; episode++) {
         env.Reset();
         auto state = env.State();
+        std::cout << "Episode " << state << std::endl;
         
 
         for (int t = 0; t < max_timesteps; t++) {
@@ -70,7 +71,11 @@ int main(){
             state = next_state;
             episode_reward += reward.item<double>();
 
-            if (done.item<bool>()) break;
+            if (done.item<bool>()) 
+            {
+                std::cout << "finished training" <<" "<<t<< std::endl;
+                break;
+            }
         }
 
         // Save the best net.

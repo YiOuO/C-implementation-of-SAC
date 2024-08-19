@@ -28,14 +28,35 @@ class SAC
 			target_critic_1 = std::make_shared<Critic>(state_dim, action_dim, log_std);
 			target_critic_2 = std::make_shared<Critic>(state_dim, action_dim, log_std);
 
-			// 复制权重到目标网络
-    		// 手动复制权重到目标网络
-			for (size_t i = 0; i < target_critic_1->parameters().size(); ++i) {
-				target_critic_1->parameters()[i].copy_(critic_1->parameters()[i]);
+			// // 复制权重到目标网络
+    		// // 手动复制权重到目标网络
+			// for (size_t i = 0; i < target_critic_1->parameters().size(); ++i) {
+			// 	target_critic_1->parameters()[i].copy_(critic_1->parameters()[i]);
+			// }
+			// for (size_t i = 0; i < target_critic_2->parameters().size(); ++i) {
+			// 	target_critic_2->parameters()[i].copy_(critic_2->parameters()[i]);
+			// }
+
+			// 需要保证目标网络和原网络参数一致  
+			auto critic_1_params = critic_1->parameters();
+			auto target_critic_1_params = target_critic_1->parameters();
+			int critic_1_param_size = critic_1_params.size();
+			for(int i = 0; i < critic_1_param_size; ++i){
+				auto& critic_target_param = target_critic_1_params[i];
+				auto& critic_param = critic_1_params[i];
+				critic_target_param.data().copy_(critic_param.data());
 			}
-			for (size_t i = 0; i < target_critic_2->parameters().size(); ++i) {
-				target_critic_2->parameters()[i].copy_(critic_2->parameters()[i]);
+
+
+			auto critic_2_params = critic_2->parameters();
+			auto target_critic_2_params = target_critic_2->parameters();
+			int critic_2_param_size = critic_2_params.size();
+			for(int i = 0; i < critic_2_param_size; ++i){
+				auto& critic_target_param = target_critic_2_params[i];
+				auto& critic_param = critic_2_params[i];
+				critic_target_param.data().copy_(critic_param.data());
 			}
+
 
 			actor_optimizer = std::make_shared<torch::optim::Adam>(actor->parameters(), torch::optim::AdamOptions(lr)); 
 			critic_1_optimizer = std::make_shared<torch::optim::Adam>(critic_1->parameters(), lr);

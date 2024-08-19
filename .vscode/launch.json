@@ -10,7 +10,7 @@
 			"request": "launch",
 			"cwd": "${fileDirname}",
 			"miDebuggerPath": "/usr/bin/gdb",
-			"program": "${workspaceRoot}/build/train_ppo"
+			"program": "${workspaceRoot}/build/train_sac"
 		}
 	]
 }
