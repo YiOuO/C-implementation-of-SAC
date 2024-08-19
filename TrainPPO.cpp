@@ -5,6 +5,8 @@
 #include "ProximalPolicyOptimization.h"
 #include "Models.h"
 #include "TestEnvironment.h"
+#include "ModelsSAC.h"
+#include "SAC.h"
 
 int main() {
 
