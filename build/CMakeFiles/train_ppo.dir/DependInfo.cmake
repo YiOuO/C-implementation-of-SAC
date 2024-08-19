@@ -1,26 +1,14 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
-  )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/verdure/drl/drl-github/ppo_libtorch/TrainSAC.cpp" "/home/verdure/drl/drl-github/ppo_libtorch/build/CMakeFiles/train_ppo.dir/TrainSAC.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
-
-# Preprocessor definitions for this target.
-set(CMAKE_TARGET_DEFINITIONS_CXX
-  "USE_C10D_GLOO"
-  "USE_DISTRIBUTED"
-  "USE_RPC"
-  "USE_TENSORPIPE"
   )
 
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../"
-  "/home/verdure/torch/libtorch/include"
-  "/home/verdure/torch/libtorch/include/torch/csrc/api/include"
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC/TrainSAC.cpp" "CMakeFiles/train_ppo.dir/TrainSAC.cpp.o" "gcc" "CMakeFiles/train_ppo.dir/TrainSAC.cpp.o.d"
   )
 
 # Targets to which this target links.

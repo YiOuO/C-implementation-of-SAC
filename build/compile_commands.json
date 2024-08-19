@@ -1,7 +1,7 @@
 [
 {
-  "directory": "/home/verdure/drl/drl-github/ppo_libtorch/build",
-  "command": "/usr/bin/c++  -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/verdure/drl/drl-github/ppo_libtorch -isystem /home/verdure/torch/libtorch/include -isystem /home/verdure/torch/libtorch/include/torch/csrc/api/include  -D_GLIBCXX_USE_CXX11_ABI=0 -g   -D_GLIBCXX_USE_CXX11_ABI=0 -std=gnu++17 -o CMakeFiles/train_ppo.dir/TrainSAC.cpp.o -c /home/verdure/drl/drl-github/ppo_libtorch/TrainSAC.cpp",
-  "file": "/home/verdure/drl/drl-github/ppo_libtorch/TrainSAC.cpp"
+  "directory": "/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC/build",
+  "command": "/usr/bin/c++ -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -I/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC -isystem /home/yi/libtorch/libtorch/include -isystem /home/yi/libtorch/libtorch/include/torch/csrc/api/include -D_GLIBCXX_USE_CXX11_ABI=0 -g -D_GLIBCXX_USE_CXX11_ABI=0 -o CMakeFiles/train_sac.dir/TrainSAC.cpp.o -c /home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC/TrainSAC.cpp",
+  "file": "/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC/TrainSAC.cpp"
 }
 ]
