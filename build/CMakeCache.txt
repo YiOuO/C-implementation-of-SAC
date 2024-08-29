@@ -233,15 +233,6 @@ c10_LIBRARY:FILEPATH=/home/yi/libtorch/libtorch/lib/libc10.so
 kineto_LIBRARY:FILEPATH=/home/yi/libtorch/libtorch/lib/libkineto.a
 
 //Value Computed by CMake
-ppo_BINARY_DIR:STATIC=/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC/build
-
-//Value Computed by CMake
-ppo_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-ppo_SOURCE_DIR:STATIC=/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC
-
-//Value Computed by CMake
 sac_BINARY_DIR:STATIC=/home/yi/Desktop/codeTest/torch/SAC/C-implementation-of-SAC/build
 
 //Value Computed by CMake
@@ -321,6 +312,8 @@ CMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_EXPORT_COMPILE_COMMANDS
+CMAKE_EXPORT_COMPILE_COMMANDS-ADVANCED:INTERNAL=1
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
 //Name of generator.

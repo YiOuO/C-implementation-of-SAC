@@ -27,7 +27,11 @@ class SAC
 			critic_2 = std::make_shared<Critic>(state_dim, action_dim, log_std);
 			target_critic_1 = std::make_shared<Critic>(state_dim, action_dim, log_std);
 			target_critic_2 = std::make_shared<Critic>(state_dim, action_dim, log_std);
-
+			actor->to(torch::kF64);
+			critic_1->to(torch::kF64);
+			critic_2->to(torch::kF64);
+			target_critic_1->to(torch::kF64);
+			target_critic_2->to(torch::kF64);
 			// // 复制权重到目标网络
     		// // 手动复制权重到目标网络
 			// for (size_t i = 0; i < target_critic_1->parameters().size(); ++i) {
@@ -119,8 +123,10 @@ std::vector<torch::Tensor> SAC::sample_batch(int batch_size)
 		dones.push_back(replay_buffer[index].done);
 	}
 
-	return {torch::stack(states), torch::stack(actions), torch::stack(rewards), 
-			torch::stack(next_states), torch::stack(dones)};
+	// std::cout << next_states << std::endl;
+
+	return {torch::cat(states), torch::cat(actions), torch::cat(rewards), 
+			torch::cat(next_states), torch::cat(dones)};
 }
 
 void SAC::store_transition(const torch::Tensor& state, const torch::Tensor& action, 
@@ -150,28 +156,42 @@ void SAC::update_actor(torch::Tensor states)
 
 void SAC::update_critics(torch::Tensor states, torch::Tensor actions, torch::Tensor rewards, torch::Tensor dones, torch::Tensor next_states)
 {
+    // 仅在计算目标Q值时禁用梯度计算
+    torch::Tensor target_q_value;
+    {
         torch::NoGradGuard no_grad;
         auto [next_actions, next_log_probs] = actor->sample(next_states);
-        auto target_q_value = torch::min(target_critic_1->forward(next_states, next_actions),
-                                         target_critic_2->forward(next_states, next_actions)) - alpha * next_log_probs;
+        target_q_value = torch::min(
+            target_critic_1->forward(next_states, next_actions),
+            target_critic_2->forward(next_states, next_actions)
+        ) - alpha * next_log_probs;
+
         target_q_value = rewards + (1 - dones) * gamma * target_q_value;
+    }
 
-        auto current_q_value_1 = critic_1->forward(states, actions);
-        auto current_q_value_2 = critic_2->forward(states, actions);
+    // 计算当前Q值和损失，保留计算图
+    auto current_q_value_1 = critic_1->forward(states, actions);
+    auto current_q_value_2 = critic_2->forward(states, actions);
 
-        auto critic_1_loss = torch::mse_loss(current_q_value_1, target_q_value);
-        auto critic_2_loss = torch::mse_loss(current_q_value_2, target_q_value);
+    auto critic_1_loss = torch::mse_loss(current_q_value_1, target_q_value.detach());
+    auto critic_2_loss = torch::mse_loss(current_q_value_2, target_q_value.detach());
 
-        critic_1_optimizer->zero_grad();
-        critic_1_loss.backward();
-        critic_1_optimizer->step();
+    // 更新第一个评论器
+    critic_1_optimizer->zero_grad();
+    critic_1_loss.backward({}, true);  // 这里会自动追踪梯度
+	// critic_1_loss.backward();
+    critic_1_optimizer->step();
 
-        critic_2_optimizer->zero_grad();
-        critic_2_loss.backward();
-        critic_2_optimizer->step();
+    // 更新第二个评论器
+    critic_2_optimizer->zero_grad();
+    critic_2_loss.backward({}, true);  // 这里也会自动追踪梯度
+	// critic_2_loss.backward();
+    critic_2_optimizer->step();
 }
 
+
 void SAC::update_target_networks() {
+	torch::NoGradGuard no_grad;
     // 更新 target_critic_1
     auto params1 = critic_1->parameters();
     auto target_params1 = target_critic_1->parameters();
@@ -194,8 +214,9 @@ void SAC::train(int batch_size) {
 	auto rewards = batch[2];
 	auto next_states = batch[3];
 	auto dones = batch[4];
+	std::cout << "next_sates "<< next_states<< std::endl;
 
-	update_critics(states, actions, rewards, next_states, dones);
+	update_critics(states, actions, rewards, dones, next_states);
 	update_actor(states);
 	update_target_networks();
 }

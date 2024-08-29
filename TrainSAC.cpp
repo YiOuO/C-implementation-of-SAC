@@ -65,6 +65,7 @@ int main(){
             agent.store_transition(state,action,reward,next_state,done);
             // SAC agent训练
             if (agent.has_enough_samples(batch_size)) {
+                std::cout << "Training..." << std::endl;
                 agent.train(batch_size);
             }
 

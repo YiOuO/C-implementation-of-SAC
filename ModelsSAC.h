@@ -27,9 +27,11 @@ struct Actor: public torch::nn::Module
 	auto forward(torch::Tensor x) -> torch::Tensor
 	{
         // auto mat1_float = x.to(torch::kFloat);
-        // std::cout<<x<<std::endl;
+        std::cout<<x<<std::endl;
 		//Actor forward
-		mu_ = torch::relu(a_lin1_->forward(x.to(torch::kFloat)));
+        // x = x.to(torch::kFloat);
+		mu_ = torch::relu(a_lin1_->forward(x));
+        // mu_ = torch::relu(a_lin1_->forward(x.to(torch::kFloat)));
 		mu_ = torch::relu(a_lin2_->forward(mu_));
 		mu_ = torch::tanh(a_lin3_->forward(mu_));
 
