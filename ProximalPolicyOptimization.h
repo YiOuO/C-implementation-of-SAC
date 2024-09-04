@@ -65,7 +65,7 @@ auto PPO::update(ActorCritic& ac,
         torch::Tensor cpy_log = torch::zeros({mini_batch_size, log_probs.size(1)}, log_probs.options());
         torch::Tensor cpy_ret = torch::zeros({mini_batch_size, returns.size(1)}, returns.options());
         torch::Tensor cpy_adv = torch::zeros({mini_batch_size, advantages.size(1)}, advantages.options());
-        std::cout<<cpy_sta<<std::endl;
+        // std::cout<<cpy_sta<<std::endl;
         for (uint b=0;b<mini_batch_size;b++) {
 
             uint idx = std::uniform_int_distribution<uint>(0, steps-1)(re);

@@ -47,7 +47,6 @@ int main(){
     for (int episode = 0; episode < max_episodes; episode++) {
         env.Reset();
         auto state = env.State();
-        std::cout << "Episode " << state << std::endl;
         
 
         for (int t = 0; t < max_timesteps; t++) {
@@ -65,7 +64,7 @@ int main(){
             agent.store_transition(state,action,reward,next_state,done);
             // SAC agent训练
             if (agent.has_enough_samples(batch_size)) {
-                std::cout << "Training..." << std::endl;
+                // std::cout << "Training..." << std::endl;
                 agent.train(batch_size);
             }
 

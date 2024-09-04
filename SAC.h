@@ -176,17 +176,21 @@ void SAC::update_critics(torch::Tensor states, torch::Tensor actions, torch::Ten
     auto critic_1_loss = torch::mse_loss(current_q_value_1, target_q_value.detach());
     auto critic_2_loss = torch::mse_loss(current_q_value_2, target_q_value.detach());
 
-    // 更新第一个评论器
-    critic_1_optimizer->zero_grad();
-    critic_1_loss.backward({}, true);  // 这里会自动追踪梯度
-	// critic_1_loss.backward();
-    critic_1_optimizer->step();
+	auto critic_loss = critic_1_loss + critic_2_loss;
+	critic_loss.backward({},true);
+	critic_1_optimizer->step();
+	critic_2_optimizer->step();
+    // // 更新第一个评论器
+    // critic_1_optimizer->zero_grad();
+    // critic_1_loss.backward({}, true);  // 这里会自动追踪梯度
+	// // critic_1_loss.backward();
+    // critic_1_optimizer->step();
 
-    // 更新第二个评论器
-    critic_2_optimizer->zero_grad();
-    critic_2_loss.backward({}, true);  // 这里也会自动追踪梯度
-	// critic_2_loss.backward();
-    critic_2_optimizer->step();
+    // // 更新第二个评论器
+    // critic_2_optimizer->zero_grad();
+    // critic_2_loss.backward({}, true);  // 这里也会自动追踪梯度
+	// // critic_2_loss.backward();
+    // critic_2_optimizer->step();
 }
 
 
@@ -214,7 +218,7 @@ void SAC::train(int batch_size) {
 	auto rewards = batch[2];
 	auto next_states = batch[3];
 	auto dones = batch[4];
-	std::cout << "next_sates "<< next_states<< std::endl;
+	// std::cout << "next_sates "<< next_states<< std::endl;
 
 	update_critics(states, actions, rewards, dones, next_states);
 	update_actor(states);
